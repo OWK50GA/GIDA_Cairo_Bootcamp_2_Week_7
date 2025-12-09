@@ -27,19 +27,19 @@ export default function NetworkSwitcher() {
     NETWORK_MAPPING[chain.network],
   );
 
-  const switchNetwork = async (newNetworkId: string, networkLabel: string) => {
-    try {
-      await window?.starknet?.request({
-        type: "wallet_switchStarknetChain",
-        params: { chainId: newNetworkId },
-      });
+  // const switchNetwork = async (newNetworkId: string, networkLabel: string) => {
+  //   try {
+  //     await window?.starknet?.request({
+  //       type: "wallet_switchStarknetChain",
+  //       params: { chainId: newNetworkId },
+  //     });
 
-      console.log(`Switched to network ${networkLabel}`);
-      setSelectedNetwork(newNetworkId);
-    } catch (error) {
-      console.error("Failed to switch networks:", error);
-    }
-  };
+  //     console.log(`Switched to network ${networkLabel}`);
+  //     setSelectedNetwork(newNetworkId);
+  //   } catch (error) {
+  //     console.error("Failed to switch networks:", error);
+  //   }
+  // };
 
   // Update selectedNetwork when chain.network changes
   React.useEffect(() => {
@@ -86,7 +86,7 @@ export default function NetworkSwitcher() {
                 role="option"
                 tabIndex={open ? 0 : -1}
                 onClick={() => {
-                  switchNetwork(network.value, network.label);
+                  // switchNetwork(network.value, network.label);
                   setOpen(false);
                 }}
               >

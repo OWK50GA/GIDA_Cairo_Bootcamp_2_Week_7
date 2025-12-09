@@ -29,7 +29,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="font-coolvetica text-sm text-text-primary md:text-md bg-white h-screen">
+      <body className="h-screen bg-white font-coolvetica text-sm text-text-primary md:text-md">
         <div className="h-[125vh]">
           <StarknetProvider>{children}</StarknetProvider>
         </div>

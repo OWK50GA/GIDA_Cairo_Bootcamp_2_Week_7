@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { CopyIcon, CheckIcon } from "../icons";
 
-function CopyButton({ copyText, className, iconClassName = "" }: {
-    copyText: string, className: string, iconClassName: string
+function CopyButton({
+  copyText,
+  className,
+  iconClassName = "",
+}: {
+  copyText: string;
+  className: string;
+  iconClassName: string;
 }) {
   const [isCopied, setIsCopied] = useState(false);
 

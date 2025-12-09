@@ -2,7 +2,6 @@
 import { useEffect, useRef } from "react";
 import { useAccount } from "@starknet-react/core";
 import AddressBar from "../lib/AddressBar";
-import ThemeSwitch from "./util/ThemeSwitch";
 import ConnectButton from "../lib/Connect";
 import useTheme from "@/app/components/internal/hooks/useTheme";
 import Link from "next/link";
