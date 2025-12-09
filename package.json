@@ -40,5 +40,8 @@
   "bugs": {
     "url": "https://github.com/horuslabsio/Starknet-Scaffold/issues"
   },
-  "homepage": "https://github.com/horuslabsio/Starknet-Scaffold#readme"
+  "homepage": "https://github.com/horuslabsio/Starknet-Scaffold#readme",
+  "dependencies": {
+    "starknet": "^8.9.2"
+  }
 }
