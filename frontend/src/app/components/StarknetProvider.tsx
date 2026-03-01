@@ -30,7 +30,7 @@ export function StarknetProvider({ children }: StarknetProviderProps) {
   return (
     <StarknetConfig
       connectors={injected}
-      chains={[mainnet, sepolia]}
+      chains={[sepolia]}
       provider={provider}
       explorer={voyager}
       autoConnect

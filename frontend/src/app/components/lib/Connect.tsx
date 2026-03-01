@@ -18,15 +18,21 @@ const Wallet = ({
   src: string;
   connector: Connector;
 }) => {
-  const { connect } = useConnect();
-  const isSvg = src?.startsWith("<svg");
+  const { connectAsync } = useConnect();
+  // const isSvg = src?.startsWith("<svg");
+  const isSvg = src.startsWith("<svg");
 
-  function handleConnectWallet(e: React.MouseEvent<HTMLButtonElement>): void {
-    connect({ connector });
-    const popover = document.getElementById("connect-modal");
-    //@ts-ignore
-    popover?.hidePopover();
-    localStorage.setItem("lastUsedConnector", connector.name);
+  async function handleConnectWallet(e: React.MouseEvent<HTMLButtonElement>): Promise<void> {
+    try {
+      await connectAsync({ connector });
+      const popover = document.getElementById("connect-modal");
+      //@ts-ignore
+      popover?.hidePopover();
+    } catch(err) {
+      console.error(err);
+    } finally {
+      localStorage.setItem("lastUsedConnector", connector.name);
+    }
   }
 
   return (
@@ -92,7 +98,8 @@ const ConnectModal = () => {
               {connectors.map((connector, index) => (
                 <Wallet
                   key={connector.id || index}
-                  src={connector.icon.toString()}
+                  // @ts-ignore
+                  src={connector.icon || connector.icon.light!}
                   name={connector.name}
                   connector={connector}
                   alt="alt"

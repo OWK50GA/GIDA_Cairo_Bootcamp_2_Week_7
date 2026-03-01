@@ -8,6 +8,9 @@ import AddNominee from "./AddNomineeForm";
 import { Candidates } from "../common/data";
 import TableHeader from "./TableHeader";
 import TableControls from "./TableControls";
+import { useAccount, useContract, useReadContract } from "@starknet-react/core";
+import { VOTING_CONTRACT_ABI, VOTING_CONTRACT_ADDRESS } from "public/abi/votingCotntractAbi";
+import { felt252ToString } from "./internal/helpers";
 
 export default function Table() {
   const searchParams = useSearchParams();
@@ -33,9 +36,32 @@ export default function Table() {
     }
   };
 
+  const { data: onchainCandidates, error } = useReadContract({
+    abi: VOTING_CONTRACT_ABI,
+    address: VOTING_CONTRACT_ADDRESS,
+    functionName: "get_all_candidates",
+    args: [],
+    watch: true
+  });
+
+  console.log(onchainCandidates);
+
+  const normalizedCandidates = onchainCandidates?.map((c, i) => {
+    return {
+      id: felt252ToString(c.id),
+      surname: felt252ToString(c.lname),
+      firstname: felt252ToString(c.fname),
+      noOfVotes: c.no_of_votes.toString(),
+      qualified: c.qualified,
+      index: c.index.toString(),
+    }
+  })
+
+  console.log("Normalized candidates: ", normalizedCandidates)
+
   return (
     <div className="mx-auto w-full px-12 py-12">
-      <TableHeader candidates={Candidates} />
+      <TableHeader candidates={normalizedCandidates || []} />
 
       <div className="mt-10 overflow-x-auto rounded-lg">
         <table className="min-w-full table-auto rounded-lg">
@@ -61,10 +87,10 @@ export default function Table() {
             </tr>
           </thead>
           <tbody className="bg-white">
-            {Candidates.slice(from, to).map((candidate, index) => {
+            {normalizedCandidates?.slice(from, to).map((candidate, index) => {
               return (
                 <tr key={index}>
-                  <td className="px-4 py-4">{candidate.id}</td>
+                  <td className="px-4 py-4">{candidate.index}</td>
                   <td className="whitespace-nowrap px-4 py-4 capitalize tracking-wider">
                     {candidate.surname}
                   </td>
@@ -109,7 +135,7 @@ export default function Table() {
       </div>
 
       {/* TABLE CONTROLS */}
-      <TableControls togglePopover={togglePopover} candidates={Candidates} />
+      <TableControls togglePopover={togglePopover} candidates={normalizedCandidates || []} />
       <GenericModal popoverId="transaction-modal" style="">
         <AddNominee />
       </GenericModal>

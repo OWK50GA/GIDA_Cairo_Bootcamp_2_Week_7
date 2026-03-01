@@ -1,5 +1,7 @@
-import { FormEvent, FormEventHandler, useState } from "react";
+import { FormEvent, FormEventHandler, useMemo, useState } from "react";
 import GenericModal from "./internal/util/GenericModal";
+import { useContract, useSendTransaction } from "@starknet-react/core";
+import { VOTING_CONTRACT_ABI, VOTING_CONTRACT_ADDRESS } from "public/abi/votingCotntractAbi";
 
 export default function AddNominee() {
   const togglePopover = ({ targetId }: { targetId: string }) => {
@@ -20,16 +22,32 @@ export default function AddNominee() {
   const [candidateFirstname, setCandidateFirstName] = useState("");
   const [candidateLastname, setCandidateLastName] = useState("");
 
-  const handleSubmit = (event: FormEvent) => {
-    event.preventDefault();
+  const { contract } = useContract({
+    abi: VOTING_CONTRACT_ABI,
+    address: VOTING_CONTRACT_ADDRESS
+  })
 
-    togglePopover({ targetId: "add-nominee-popover" });
+  const transaction = useMemo(() => {
+    if (!contract) return;
+    if (candidateFirstname.length === 0 || candidateLastname.length === 0) return;
+
+    return [contract.populate("nominate", [candidateFirstname, candidateLastname])];
+  }, [candidateFirstname, candidateLastname]);
+
+  const { sendAsync, isError, isPending, isSuccess } = useSendTransaction(transaction ? {
+    calls: transaction
+  } : ({} as any))
+
+  const handleSubmit = async () => {
+
+
+
+    await sendAsync();
     console.log(candidateFirstname, candidateLastname);
   };
 
   return (
-    <form
-      action=""
+    <div
       className="rounded-lg border border-gray-200 px-16 py-8"
       // onSubmit={}
     >
@@ -70,13 +88,13 @@ export default function AddNominee() {
 
       <div className="mx-auto mt-5 w-[100%]">
         <button
-          onClick={() => handleSubmit}
+          onClick={handleSubmit}
           className="w-full rounded-md bg-blue-500 px-4 py-2 text-white"
           type="submit"
         >
           Add Nominee
         </button>
       </div>
-    </form>
+    </div>
   );
 }

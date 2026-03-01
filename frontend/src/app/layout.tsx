@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { StarknetProvider } from "~/StarknetProvider";
-import Footer from "./components/internal/Footer";
-import { Analytics } from "./components/internal/Analytics";
 
 export const metadata: Metadata = {
   title: "Starknet Scaffold",

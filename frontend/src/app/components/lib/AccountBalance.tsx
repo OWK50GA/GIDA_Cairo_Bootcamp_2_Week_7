@@ -1,6 +1,9 @@
 import { useReadContract } from "@starknet-react/core";
 import { ERC20ABI } from "../../../../public/abi/tokenAbi";
-import { ETH_SEPOLIA, STRK_SEPOLIA } from "@/app/components/internal/helpers/constant";
+import {
+  ETH_SEPOLIA,
+  STRK_SEPOLIA,
+} from "@/app/components/internal/helpers/constant";
 import { formatCurrency } from "../internal/helpers";
 
 type Props = {
@@ -25,10 +28,9 @@ function AccountBalance({ address, heading = true }: Props) {
     watch: true,
   });
 
-  // @ts-ignore
-  const ethBalance = formatCurrency(eth?.balance.low.toString());
-  // @ts-ignore
-  const strkBalance = formatCurrency(strk?.balance?.low.toString());
+  // const ethBalance = formatCurrency(eth?.balance.low.toString());
+  const ethBalance = (eth?.valueOf().toString());
+  const strkBalance = strk?.valueOf().toString();
 
   return (
     <div className="p-4 text-sm">
